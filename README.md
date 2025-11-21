@@ -1,168 +1,99 @@
-# Experiment-5-Develop-an-embedded-IoT-security-system-for-electric-vehicles.-
+# Experiment-6-Integrate-sensors-to-monitor-vehicle-components
 
 ## AIM
-To develop and implement an Embedded IoT Security System for an Electric Vehicle (EV) that includes secure access authentication, intrusion detection, and encrypted communication, using MATLAB for simulation and visualization.
- 
-## APPARATUS REQUIRED
-✅ Software & Hardware Components
-
-•	MATLAB (for simulation & graph visualization)
-
-•	Microcontroller (ESP32/Arduino) (for real-world implementation)
-
-•	RFID Module / Keypad (for secure access)
-
-•	PIR Motion Sensor (for intrusion detection)
-
-•	IoT Communication Protocol (e.g., MQTT, LoRa, or WiFi if implemented in hardware)
- 
-## THEORY
-1. Secure Access Authentication
-•	Uses a predefined password-based system for vehicle unlocking.
-•	If the entered access code matches the stored password, access is granted; otherwise, it is denied.
-2. Intrusion Detection
-•	A PIR motion sensor (or simulated random input) detects unauthorized movement around the vehicle.
-•	If motion is detected, an intrusion alert is triggered.
-3. Secure Communication Protocol
-•	Encrypts and transmits security status messages.
-•	Simulated data exchange between the embedded system and the monitoring station.
-4. Graphical Representation
-•	MATLAB generates a bar graph with: 
-o	Green bar → Access Granted ✅
-o	Red bar → Intrusion Detected ⚠️
+To develop an embedded IoT-based predictive maintenance system for an electric vehicle by integrating sensors that monitor battery health, motor temperature, and brake wear and analyze the data for maintenance prediction.
  
 ## PROCEDURE
-Step 1: User Authentication
-1.	The system prompts the user to enter the vehicle access code.
-2.	If the password matches, access is granted; otherwise, it is denied.
-Step 2: Intrusion Detection
-3.	The system simulates motion detection (randomized).
-4.	If motion is detected, an intrusion alert is generated.
-Step 3: Secure Communication
-5.	The system sends an encrypted security message.
-6.	The message is displayed on the receiver end (simulated in MATLAB).
-Step 4: Visualization
-7.	A bar chart is generated in MATLAB, showing the status of: 
-o	Access Control
-o	Intrusion Detection
-
-## Features of This Code
-
-✅ User Authentication – Checks vehicle access code.
-
-✅ Intrusion Detection – Simulates motion sensor input.
-
-✅ Secure Communication – Simulated encryption and message transmission.
-
-✅ Graphical Visualization – Displays security status in a bar chart.
+1.	Simulate Sensor Data 
+o	Generate battery health, motor temperature, and brake wear data.
+2.	Analyze Trends 
+o	Detect if any sensor crosses predefined maintenance thresholds.
+3.	Predict Maintenance Needs 
+o	If any component shows abnormal behavior, flag it for preventive maintenance.
+4.	Visualize Data with Graphs 
+o	Plot sensor readings and highlight maintenance limits.
+5.	Display Alerts 
+o	Output maintenance warnings based on real-time sensor data analysis.
  
+## THEORY
+1. Predictive Maintenance in EVs
+•	Battery degradation over time affects range and efficiency.
+•	Motor overheating can lead to failures if not detected early.
+•	Brake wear monitoring ensures vehicle safety.
+2. IoT and Data Analytics Role
+•	Real-time monitoring of EV components using embedded sensors.
+•	Threshold-based predictions help prevent breakdowns.
+•	Graphs help visualize component performance over time.
+
 ## PROGRAM
-
-clear;
-
-clc; 
-
-close all;
-
-%% User Authentication (Access Control)
-
-correct_password = "1234"; % Predefined Password
-
-user_input = input('Enter Vehicle Access Code: ', 's');
-
-if strcmp(user_input, correct_password)
-
-    access_granted = 1;
-    
-    disp('✅ Access Granted: Vehicle Unlocked');
-    
-else
-    access_granted = 0;
-    
-    disp('❌ Access Denied: Incorrect Password');
-    
-end
-
-%% Simulated Intrusion Detection
-
-motion_detected = randi([0, 1]); % Randomly simulates intrusion (0 = No intrusion, 1 = Intrusion detected)
-
-if motion_detected == 1
-
-    intrusion_status = 1;
-    
-    disp('⚠️ Intrusion Alert: Unauthorized Movement Detected!');
-    
-else
-
-    intrusion_status = 0;
-    
-    disp('✅ Vehicle Secure: No Intrusion Detected.');
-    
-end
-
-%% Secure Communication Simulation
-
-message = "EV Security System Active";
-
-disp(['🔒 Sending Secure Message: ', message]);
-
-pause(1); % Simulating Data Transmission
-
-disp(['📩 Received Message: ', message]); % Simulating Decryption
-
-%% 🔥 Plot Security System Status
-
+```
+clear; clc; close all;
+ 
+%% Simulated Time (100 samples)
+time = linspace(0, 10, 100); 
+ 
+%% Simulated Sensor Data
+battery_health = 100 - 2*time + 3*sin(0.5*time);  % Battery health (%)
+motor_temp = 40 + 10*sin(time); % Motor temperature (°C)
+brake_wear = 5 + 0.3*time + 2*sin(0.3*time); % Brake wear (%)
+ 
+%% Predict Maintenance Need (Thresholds)
+battery_threshold = 60;  % Battery needs maintenance if below 60%
+motor_temp_threshold = 70;  % Motor needs check if temp exceeds 70°C
+brake_threshold = 15;  % Brake needs check if wear exceeds 15%
+ 
+maintenance_flag = (battery_health < battery_threshold) | ...
+                   (motor_temp > motor_temp_threshold) | ...
+                   (brake_wear > brake_threshold);
+ 
+%% Plot Sensor Data
 figure;
-
-bar([access_granted, intrusion_status], 'FaceColor', 'flat');
-
-xticklabels({'Access Granted', 'Intrusion Detected'});
-
-ylabel('Status (1 = Yes, 0 = No)');
-
-ylim([0 1.2]);
-
-title('EV Security System Status');
-
+ 
+subplot(3,1,1);
+plot(time, battery_health, 'b', 'LineWidth', 2);
+hold on; yline(battery_threshold, 'r--', 'Battery Threshold');
+title('Battery Health Over Time');
+xlabel('Time (s)');
+ylabel('Battery Health (%)');
 grid on;
-
-% Change colors dynamically
-
-b = gca;
-
-b.Children(1).CData = [0 1 0; 1 0 0]; % Green for access, Red for intrusion
-
-%% Ensure MATLAB Waits for Output Display
-
-pause(3); % Wait 3 seconds before script ends (For GUI users)
-
+ 
+subplot(3,1,2);
+plot(time, motor_temp, 'g', 'LineWidth', 2);
+hold on; yline(motor_temp_threshold, 'r--', 'Temp Threshold');
+title('Motor Temperature Over Time');
+xlabel('Time (s)');
+ylabel('Temperature (°C)');
+grid on;
+ 
+subplot(3,1,3);
+plot(time, brake_wear, 'm', 'LineWidth', 2);
+hold on; yline(brake_threshold, 'r--', 'Brake Wear Limit');
+title('Brake Wear Over Time');
+xlabel('Time (s)');
+ylabel('Wear (%)');
+grid on;
+ 
+%% Display Maintenance Predictions
+fprintf('Predictive Maintenance Alert:\n');
+if any(maintenance_flag)
+    disp('⚠️ Maintenance Needed for Vehicle Components! ⚠️');
+else
+    disp('✅ All systems are operating within safe limits.');
+end
+```
 
 ## OUTPUT
 
-![WhatsApp Image 2025-11-11 at 11 00 14_49615ca7](https://github.com/user-attachments/assets/48251c79-cdd6-4d80-bf05-dee0d3197411)
 
-![WhatsApp Image 2025-11-11 at 11 02 47_1898dfbc](https://github.com/user-attachments/assets/5993b646-e842-4696-8111-6e77d5c78d04)
+![WhatsApp Image 2025-11-11 at 11 36 40_6d113c30](https://github.com/user-attachments/assets/da2ef8df-6ca1-4a58-98b6-f562192f9156)
 
 
-## RESULT
-
-The MATLAB program successfully simulates an Embedded IoT Security System for Electric Vehicles, demonstrating:
-
-✅ Access Control System – User authentication mechanism
-
-✅ Intrusion Detection – Motion sensor alert system
-
-✅ Secure Communication – Encrypted security message transmission
-
-✅ Graphical Representation – Real-time security status visualization
-
-📊 Graph Output
-
-•	Green Bar (1) → Access Granted ✅
-
-•	Red Bar (1) → Intrusion Detected ⚠️
-
-•	Bars at 0 → No intrusion or incorrect password
  
+## RESULT
+✅ The MATLAB simulation successfully predicts maintenance needs in an electric vehicle.
+✅ The system detects potential failures in battery, motor, and brakes.
+✅ Graphical analysis provides a clear view of component health.
+ 
+
+
 
