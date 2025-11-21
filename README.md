@@ -5,10 +5,15 @@ To develop and implement an Embedded IoT Security System for an Electric Vehicle
  
 ## APPARATUS REQUIRED
 ✅ Software & Hardware Components
+
 •	MATLAB (for simulation & graph visualization)
+
 •	Microcontroller (ESP32/Arduino) (for real-world implementation)
+
 •	RFID Module / Keypad (for secure access)
+
 •	PIR Motion Sensor (for intrusion detection)
+
 •	IoT Communication Protocol (e.g., MQTT, LoRa, or WiFi if implemented in hardware)
  
 ## THEORY
@@ -42,23 +47,122 @@ o	Access Control
 o	Intrusion Detection
 
 ## Features of This Code
+
 ✅ User Authentication – Checks vehicle access code.
+
 ✅ Intrusion Detection – Simulates motion sensor input.
+
 ✅ Secure Communication – Simulated encryption and message transmission.
+
 ✅ Graphical Visualization – Displays security status in a bar chart.
  
 ## PROGRAM
- 
- 
+
+clear;
+
+clc; 
+
+close all;
+
+%% User Authentication (Access Control)
+
+correct_password = "1234"; % Predefined Password
+
+user_input = input('Enter Vehicle Access Code: ', 's');
+
+if strcmp(user_input, correct_password)
+
+    access_granted = 1;
+    
+    disp('✅ Access Granted: Vehicle Unlocked');
+    
+else
+    access_granted = 0;
+    
+    disp('❌ Access Denied: Incorrect Password');
+    
+end
+
+%% Simulated Intrusion Detection
+
+motion_detected = randi([0, 1]); % Randomly simulates intrusion (0 = No intrusion, 1 = Intrusion detected)
+
+if motion_detected == 1
+
+    intrusion_status = 1;
+    
+    disp('⚠️ Intrusion Alert: Unauthorized Movement Detected!');
+    
+else
+
+    intrusion_status = 0;
+    
+    disp('✅ Vehicle Secure: No Intrusion Detected.');
+    
+end
+
+%% Secure Communication Simulation
+
+message = "EV Security System Active";
+
+disp(['🔒 Sending Secure Message: ', message]);
+
+pause(1); % Simulating Data Transmission
+
+disp(['📩 Received Message: ', message]); % Simulating Decryption
+
+%% 🔥 Plot Security System Status
+
+figure;
+
+bar([access_granted, intrusion_status], 'FaceColor', 'flat');
+
+xticklabels({'Access Granted', 'Intrusion Detected'});
+
+ylabel('Status (1 = Yes, 0 = No)');
+
+ylim([0 1.2]);
+
+title('EV Security System Status');
+
+grid on;
+
+% Change colors dynamically
+
+b = gca;
+
+b.Children(1).CData = [0 1 0; 1 0 0]; % Green for access, Red for intrusion
+
+%% Ensure MATLAB Waits for Output Display
+
+pause(3); % Wait 3 seconds before script ends (For GUI users)
+
+
+## OUTPUT
+
+![WhatsApp Image 2025-11-11 at 11 00 14_49615ca7](https://github.com/user-attachments/assets/48251c79-cdd6-4d80-bf05-dee0d3197411)
+
+![WhatsApp Image 2025-11-11 at 11 02 47_1898dfbc](https://github.com/user-attachments/assets/5993b646-e842-4696-8111-6e77d5c78d04)
+
+
 ## RESULT
+
 The MATLAB program successfully simulates an Embedded IoT Security System for Electric Vehicles, demonstrating:
+
 ✅ Access Control System – User authentication mechanism
+
 ✅ Intrusion Detection – Motion sensor alert system
+
 ✅ Secure Communication – Encrypted security message transmission
+
 ✅ Graphical Representation – Real-time security status visualization
+
 📊 Graph Output
+
 •	Green Bar (1) → Access Granted ✅
+
 •	Red Bar (1) → Intrusion Detected ⚠️
+
 •	Bars at 0 → No intrusion or incorrect password
  
 
